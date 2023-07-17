@@ -1,8 +1,8 @@
+import os
 import telebot
 import psycopg2
 
-TOKEN = ''
-bot = telebot.TeleBot(TOKEN)
+bot = telebot.TeleBot('6102845495:AAEPtw-fCfCrR3gD5naR37lQGxnLnFvJurE')
 
 connect_text = {}
 table_name = {}
@@ -12,7 +12,8 @@ commands = [
     telebot.types.BotCommand('start', 'запустить бота'),
     telebot.types.BotCommand('create_table', 'создать таблицу'),
     telebot.types.BotCommand('insert_data', 'вставить данные в таблицу'),
-    telebot.types.BotCommand('delete_row', 'удалить данные из таблицы')]
+    telebot.types.BotCommand('delete_row', 'удалить данные из таблицы'),
+    telebot.types.BotCommand('open', 'открыть pgAdmin 4')]
 bot.set_my_commands(commands)
 
 def open_database_connection():
@@ -157,6 +158,10 @@ def delete_row_by_number(message):
         bot.send_message(message.chat.id, f'строка {row_num} удалена')
     cur.close()
     conn.close()
+
+@bot.message_handler(commands=['open'])
+def start_pg(message):
+    os.startfile('C:/Program Files/PostgreSQL/15/pgAdmin 4/bin/pgAdmin4.exe')
 
 if __name__ == '__main__':
     bot.infinity_polling(none_stop=True)
